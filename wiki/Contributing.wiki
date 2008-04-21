@@ -1,4 +1,6 @@
-#summary Contributing to MigratorDotNet
+#summary Contributing to Migrator.NET
+
+Please feel free to submit patches to Migrator.NET, no need to ask! Just document the issue/feature well on the issues page, and attach your patch.
 
 = Submitting Patches =
 
