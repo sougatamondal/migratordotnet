@@ -1,0 +1,18 @@
+#summary Contributing to MigratorDotNet
+
+= Submitting Patches =
+
+Patches should be added via the issues page on the Google Code project.
+
+http://code.google.com/p/migratordotnet/issues/list
+
+Please attach any patch files with a summary & bug description.
+
+==Patch Standards==
+
+Please create one patch per functional change (including tests). Large patches containing non-related functionality will probably be told to repatch as separate issues.
+
+
+= Coding Standards =
+
+For now, please consult the [http://www.castleproject.org/community/codingstandards.html Castle Coding Standards] page
