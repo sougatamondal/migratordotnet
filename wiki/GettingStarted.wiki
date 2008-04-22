@@ -10,6 +10,7 @@ Each Migration should be a very small incremental step in the database. Common s
  
 A sample migration would be as follows:
 
+{{{
 // Version 1
 [Migration(1)]
 public class CreateUserTable : Migration
@@ -28,12 +29,14 @@ public class CreateUserTable : Migration
     }
 }
 
+}}}
 The Migration Attribute is passed an integer which corresponds to which version this migration is. The migration after this would be passed a 2 to state that it is the second migration. When you run the migrator.console.exe and tell it which version number you wish to migrate to.
 
 To actually perform the migration call migration.console.exe passing in the required parameters.
 
 There is also an NAnt task that allows you to perform the migration within an NAnt build script. Below is a sample migration.build file:
 
+{{{
 <?xml version="1.0" ?>
 <project default="migrate">
 	<property name="project.dir" value="."/>
@@ -62,3 +65,4 @@ There is also an NAnt task that allows you to perform the migration within an NA
       to="${version}" />
   </target>
 </project>
+}}}
