@@ -1,0 +1,70 @@
+Index: GettingStarted.wiki
+===================================================================
+--- GettingStarted.wiki	(revision 0)
++++ GettingStarted.wiki	(revision 0)
+@@ -0,0 +1,64 @@
++#summary Getting Started with MigratorDotNet
++
++= Introduction =
++
++MigratorDotNet is a database versioning system much like Ruby's Migrations.
++
++The basic concept here is that you create an assembly that contains your "Migrations". The Migrations are classes that derive from the Migration class. Upon deriving from Migration you will need to write the code necessary to "Up" that migration or "Down" that migration. When you migrate to that version of the database, the Up() method will be called and executing whatever database modifications need to be ran in order to bring your database to that version. When you migrate in reverse to a previous version, the Down() method will be called executing database modifications in order to undo that set of database changes.
++
++Each Migration should be a very small incremental step in the database. Common sizes of Migrations are creating a table and adding one or more columns to a table, altering the data of a table, running a custom query with ExecuteQuery on tables. Keep your migrations as small as possible as this will facilitate easier steps between versions, much like you would in a traditional version control system such as VSS or SVN.
++ 
++A sample migration would be as follows:
++
++// Version 1
++[Migration(1)]
++public class CreateUserTable : Migration
++{
++    public void Up()
++    {
++        Database.CreateTable("User",
++            new Column("UserId", typeof(int), ColumnProperties.PrimaryKeyWithIdentity),
++            new Column("Username", typeof(string), 25)
++            );
++    }
++    
++    public void Down()
++    {
++        Database.RemoveTable("User");
++    }
++}
++
++The Migration Attribute is passed an integer which corresponds to which version this migration is. The migration after this would be passed a 2 to state that it is the second migration. When you run the migrator.console.exe and tell it which version number you wish to migrate to.
++
++To actually perform the migration call migration.console.exe passing in the required parameters.
++
++There is also an NAnt task that allows you to perform the migration within an NAnt build script. Below is a sample migration.build file:
++
++<?xml version="1.0" ?>
++<project default="migrate">
++	<property name="project.dir" value="."/>
++	<property name="output.dir" value="${project.dir}\Output" />
++  <loadtasks assembly="${project.dir}\lib\migrator\Migrator.NAnt.dll" />
++
++	<target name="clean" description="Deletes the previously built directories">
++		<delete dir="${output.dir}" failonerror="false" />
++	</target>
++
++	<target name="build" description="Builds Migration Project" depends="clean">
++		<msbuild project="${project.dir}\src\Migrations.Project\Migrations.Project.csproj">
++			<property name="Configuration" value="Debug" />
++			<property name="OutDir" value="${output.dir}\\" />
++		</msbuild>
++	</target>
++	
++	<!-- Database Migrations task -->
++  <target name="migrate" description="Migrate the database" depends="build">
++    <!-- Using a version of -1 will cause the migration to migrate to the latest version -->
++    <property name="version" value="-1" overwrite="false" />
++    <migrate
++      provider="MySql"
++      connectionstring="Database=mydb;Data Source=localhost;User Id=mysqluser;Password=mysqlpassword;"
++      migrations="${output.dir}\Migrations.Project.dll"
++      to="${version}" />
++  </target>
++</project>
+\ No newline at end of file
