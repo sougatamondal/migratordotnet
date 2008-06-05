@@ -1,5 +1,8 @@
 #summary Getting Started with MigratorDotNet
 
+= PLEASE NOTE =
+==This documentation is currently out of date due to recent refactorings done on the trunk. the documentation will be updated shortly.==
+
 = Introduction =
 
 MigratorDotNet is a database versioning system much like Ruby's Migrations.
