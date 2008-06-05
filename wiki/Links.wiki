@@ -2,12 +2,8 @@
 
 = Introduction =
 
-To get you started, here is some links to some articles, written by Migrator.NET's creator.
-
-
+To get you started, here is some links to some articles and blog posts. Most of them are from Marc-Andre Cournoyer, the original creator of Migrator.Net
 = Links =
-
-More Information:
 
 ==Getting Started with Migrator.NET==
 http://www.lostechies.com/blogs/sean_chambers/archive/2008/06/04/getting-started-with-migrator-net-and-database-refactorings.aspx
