@@ -10,7 +10,9 @@ To get you started, here is some links to some articles, written by Migrator.NET
 More Information:
 
 ==Getting Started with Migrator.NET==
-http://macournoyer.wordpress.com/2006/09/20/database-migration-for-net
+http://www.lostechies.com/blogs/sean_chambers/archive/2008/06/04/getting-started-with-migrator-net-and-database-refactorings.aspx
+
+(outdated) http://macournoyer.wordpress.com/2006/09/20/database-migration-for-net
 
 ==Where did Migrator.NET come from==
 http://macournoyer.wordpress.com/2007/09/18/the-migrations-for-net-project-is-not-dead-yet
