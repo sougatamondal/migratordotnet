@@ -3,6 +3,7 @@
 = Introduction =
 
 To get you started, here is some links to some articles and blog posts. Most of them are from Marc-Andre Cournoyer, the original creator of Migrator.Net
+
 = Links =
 
 ==Getting Started with Migrator.NET==
@@ -18,3 +19,6 @@ http://macournoyer.wordpress.com/2007/02/11/agile-database-fun-with-the-migrator
 
 ==Migrate NAnt Task==
 http://macournoyer.wordpress.com/2006/10/15/migrate-nant-task
+
+==Database Migrations for .NET==
+http://www.zorched.net/2008/04/20/database-migrations-for-net/

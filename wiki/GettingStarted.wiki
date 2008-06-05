@@ -1,11 +1,23 @@
 #summary Getting Started with MigratorDotNet
 
-= PLEASE NOTE =
-==This documentation is currently out of date due to recent refactorings done on the trunk. the documentation will be updated shortly.==
-
 = Introduction =
 
-MigratorDotNet is a database versioning system much like Ruby's Migrations.
+MigratorDotNet is a database versioning system much like Ruby on Rail's Migrations.
+
+== Supported Databases ==
+
+* MySQL
+* Oracle (not well tested?)
+* PostgreSQL
+* SQLite
+* SQL Server
+
+== Supported Modes ==
+* NAntTask
+* MSBuildTarget
+* Console Application (You should be using an automation tool! :))
+
+== Overview ==
 
 The basic concept here is that you create an assembly that contains your "Migrations". The Migrations are classes that derive from the Migration class. Upon deriving from Migration you will need to write the code necessary to "Up" that migration or "Down" that migration. When you migrate to that version of the database, the Up() method will be called and executing whatever database modifications need to be ran in order to bring your database to that version. When you migrate in reverse to a previous version, the Down() method will be called executing database modifications in order to undo that set of database changes.
 
@@ -21,8 +33,8 @@ public class CreateUserTable : Migration
     public void Up()
     {
         Database.CreateTable("User",
-            new Column("UserId", DbType.Int32, ColumnProperties.PrimaryKeyWithIdentity),
-            new Column("Username", DbType.String, 25)
+            new Column("UserId", DBType.Int32, ColumnProperties.PrimaryKeyWithIdentity),
+            new Column("Username", DBType.AnsiString, 25)
             );
     }
     
@@ -69,3 +81,70 @@ There is also an NAnt task that allows you to perform the migration within an NA
   </target>
 </project>
 }}}
+
+= Details =
+
+== Add bin/Migrator.Framework.dll to you project references ==
+
+* All of the other DLLs are only needed for actually running the migrations.
+
+== Create a class for your migration like ==
+
+{{{
+    using Migrator.Framework;
+    [Migration(1)]
+    public class MyMigration : Migration
+    {
+      public override void Up()
+      {
+        // Create stuff
+      }
+      public override void Down()
+      {
+        // Remove the same stuff
+      }
+    }
+}}}
+
+See WritingMigrations for more details.
+
+== Compile your Migrations (Optional) ==
+
+Use your IDE or hopefully with your build automation tool like MSBuildTarget or NAntTask
+
+MigratorDotNet now supports compiling the migrations on the fly as you run the migrations as well.
+
+== Run the Migrations ==
+
+Use the console (Migrator.Console.exe) or use the migrator NAnt or MSBuild tasks
+
+=== NAnt ===
+
+{{{
+    <loadtasks assembly=".../Migrator.NAnt.dll" />
+    <target name="migrate" description="Migrate the database" depends="build">
+      <property name="version" value="-1" overwrite="false" />
+        <migrate
+          provider="MySql|PostgreSQL|SqlServer"
+          connectionstring="Database=MyDB;Data Source=localhost;User Id=;Password=;"
+          migrations="bin/MyProject.dll"
+          to="${version}" />
+    </target>
+}}}
+
+=== MSBuild ===
+
+{{{
+    <PropertyGroup>
+        <MigratorTasksPath>$(MSBuildProjectDirectory)\migrator</MigratorTasksPath>
+    </PropertyGroup>
+
+    <Import Project="$(MigratorTasksPath)\Migrator.Targets" />
+
+    <Target name="Migrate" DependsOnTargets="Build">
+        <Migrate Provider="SqlServer" 
+            Connectionstring="Database=MyDB;Data Source=localhost;User Id=;Password=;" 
+            Migrations="bin/MyProject.dll"/>
+    </Target>
+}}}
+
