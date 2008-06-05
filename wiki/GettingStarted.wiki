@@ -6,16 +6,16 @@ MigratorDotNet is a database versioning system much like Ruby on Rail's Migratio
 
 == Supported Databases ==
 
-* MySQL
-* Oracle (not well tested?)
-* PostgreSQL
-* SQLite
-* SQL Server
+ * MySQL
+ * Oracle (not well tested?)
+ * PostgreSQL
+ * SQLite
+ * SQL Server
 
 == Supported Modes ==
-* NAntTask
-* MSBuildTarget
-* Console Application (You should be using an automation tool! :))
+ * NAntTask
+ * MSBuildTarget
+ * Console Application (You should be using an automation tool! :))
 
 == Overview ==
 
@@ -147,4 +147,3 @@ Use the console (Migrator.Console.exe) or use the migrator NAnt or MSBuild tasks
             Migrations="bin/MyProject.dll"/>
     </Target>
 }}}
-
