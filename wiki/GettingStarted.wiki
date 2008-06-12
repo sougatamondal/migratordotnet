@@ -6,11 +6,11 @@ MigratorDotNet is a database versioning system much like Ruby on Rail's Migratio
 
 == Supported Databases ==
 
- * MySQL
+ * MySQL (5.0, 5.1)
  * Oracle (not well tested?)
  * PostgreSQL
  * SQLite
- * SQL Server
+ * SQL Server (2000, 2005)
 
 == Supported Modes ==
  * NAntTask
