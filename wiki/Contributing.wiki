@@ -14,6 +14,9 @@ Please attach any patch files with a summary & bug description.
 
 Please create one patch per functional change (including tests). Large patches containing non-related functionality will probably be told to repatch as separate issues.
 
+ * All patches should be complete and include unit tests for any changes that are being made
+ * If the tests don't pass, the patch won't be applied
+ * Use good coding practices (Avoid code duplication, Refactor to add new code when necessary)
 
 = Coding Standards =
 
