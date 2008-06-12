@@ -118,6 +118,15 @@ MigratorDotNet now supports compiling the migrations on the fly as you run the m
 
 Use the console (Migrator.Console.exe) or use the migrator NAnt or MSBuild tasks
 
+=== Provider Names ===
+ * PostgreSQL
+ * SQLite
+ * Oracle
+ * MySql
+ * SqlServer
+ * SqlServer2005
+
+
 === NAnt ===
 
 {{{
