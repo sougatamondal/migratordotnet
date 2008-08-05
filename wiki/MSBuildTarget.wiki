@@ -64,6 +64,23 @@ _The default language to use is CSharp. If you want to use a different language 
 </Target>
 }}}
 
+== Outputing Generated SQL Statements ==
+
+To save all of the generated SQL Statements that Migrator.Net runs against your database add a *ScriptFile* attribute.
+
+{{{
+<Target name="Migrate" DependsOnTargets="Build">
+    <CreateProperty Value="-1"  Condition="'$(SchemaVersion)'==''">
+        <Output TaskParameter="Value" PropertyName="SchemaVersion"/>
+    </CreateProperty>
+    <Migrate Provider="SqlServer"
+            Connectionstring="Database=MyDB;Data Source=localhost;User Id=;Password=;"
+            Directory="migrations"
+            To="$(SchemaVersion)"
+            Scriptfile="migrations.sql"/>
+</Target>
+}}}
+
 See the *example/example-msbuild.proj* for a working example.
 
 == Full Example ==

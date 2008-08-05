@@ -2,7 +2,7 @@
 
 = Introduction =
 
-MigratorDotNet is a database versioning system much like Ruby on Rail's Migrations.
+MigratorDotNet is a database versioning system much like Ruby on Rail's Migrations.  Its purpose is to automate your database changes, and help keep those changes in sync throughout your environments.
 
 == Supported Databases ==
 
@@ -10,11 +10,11 @@ MigratorDotNet is a database versioning system much like Ruby on Rail's Migratio
  * Oracle (not well tested?)
  * PostgreSQL
  * SQLite
- * SQL Server (2000, 2005)
+ * SQL Server (2000, 2005, CE)
 
-== Supported Modes ==
- * NAntTask
+== Supported Execution Modes ==
  * MSBuildTarget
+ * NAntTask
  * Console Application (You should be using an automation tool! :))
 
 == Overview ==
@@ -26,133 +26,56 @@ Each Migration should be a very small incremental step in the database. Common s
 A sample migration would be as follows:
 
 {{{
-// Version 1
-[Migration(1)]
-public class CreateUserTable : Migration
+using Migrator.Framework;
+using System.Data;
+
+namespace DBMigration
 {
-    public void Up()
-    {
-        Database.CreateTable("User",
-            new Column("UserId", DBType.Int32, ColumnProperties.PrimaryKeyWithIdentity),
-            new Column("Username", DBType.AnsiString, 25)
-            );
-    }
-    
-    public void Down()
-    {
-        Database.RemoveTable("User");
-    }
+	[Migration(20080401110402)]
+	public class 001_CreateUserTable : Migration
+	{
+		public void Up()
+		{
+			Database.CreateTable("User",
+				new Column("UserId", DBType.Int32, ColumnProperties.PrimaryKeyWithIdentity),
+				new Column("Username", DBType.AnsiString, 25)
+				);
+		}
+
+		public void Down()
+		{
+			Database.RemoveTable("User");
+		}
+	}
 }
-
 }}}
-The Migration Attribute is passed an integer which corresponds to which version this migration is. The migration after this would be passed a 2 to state that it is the second migration. When you run the migrator.console.exe and tell it which version number you wish to migrate to.
-
-To actually perform the migration call migration.console.exe passing in the required parameters.
-
-There is also an NAnt task that allows you to perform the migration within an NAnt build script. Below is a sample migration.build file:
-
-{{{
-<?xml version="1.0" ?>
-<project default="migrate">
-	<property name="project.dir" value="."/>
-	<property name="output.dir" value="${project.dir}\Output" />
-  <loadtasks assembly="${project.dir}\lib\migrator\Migrator.NAnt.dll" />
-
-	<target name="clean" description="Deletes the previously built directories">
-		<delete dir="${output.dir}" failonerror="false" />
-	</target>
-
-	<target name="build" description="Builds Migration Project" depends="clean">
-		<msbuild project="${project.dir}\src\Migrations.Project\Migrations.Project.csproj">
-			<property name="Configuration" value="Debug" />
-			<property name="OutDir" value="${output.dir}\\" />
-		</msbuild>
-	</target>
-	
-	<!-- Database Migrations task -->
-  <target name="migrate" description="Migrate the database" depends="build">
-    <!-- Using a version of -1 will cause the migration to migrate to the latest version -->
-    <property name="version" value="-1" overwrite="false" />
-    <migrate
-      provider="MySql"
-      connectionstring="Database=mydb;Data Source=localhost;User Id=mysqluser;Password=mysqlpassword;"
-      migrations="${output.dir}\Migrations.Project.dll"
-      to="${version}" />
-  </target>
-</project>
-}}}
-
-= Details =
-
-== Add bin/Migrator.Framework.dll to you project references ==
-
-* All of the other DLLs are only needed for actually running the migrations.
-
-== Create a class for your migration like ==
-
-{{{
-    using Migrator.Framework;
-    [Migration(1)]
-    public class MyMigration : Migration
-    {
-      public override void Up()
-      {
-        // Create stuff
-      }
-      public override void Down()
-      {
-        // Remove the same stuff
-      }
-    }
-}}}
-
-See WritingMigrations for more details.
-
-== Compile your Migrations (Optional) ==
-
-Use your IDE or hopefully with your build automation tool like MSBuildTarget or NAntTask
-
-MigratorDotNet now supports compiling the migrations on the fly as you run the migrations as well.
-
-== Run the Migrations ==
-
-Use the console (Migrator.Console.exe) or use the migrator NAnt or MSBuild tasks
-
-=== Provider Names ===
- * PostgreSQL
- * SQLite
- * Oracle
- * MySql
- * SqlServer
- * SqlServer2005
+Where the Migration Attribute indicates the timestamp of when this Migration was created.
 
 
-=== NAnt ===
+== Installation and Configuration With Visual Studio ==
+* Here are the steps to add migrations to an existing solution in Visual Studio:
+# Add a new class library project.  In this example it's called Called DBMigration.
+# Create a lib directory in your DBMigration project, and extract all the dotnetmigrator DLLs into it. You can exclude database-specific DLLs that you don't need.  e.g. If you're not using Oracle, you don't need Oracle.DataAccess.dll.
+# In your DBMigration project, add a reference to the Migrator.Framework.dll. That's the only additional reference you need in the project.
+# create a build.proj file in your DBMigration project dir.  Refer to the full example in *MSBuildTarget.wiki*.  If you're using SQL Server, the only attribute you should need to adjust is the Connectionstring.  
+# Create your first migration.  For visual ease, it's nice to give migrations names that match their migration order.  e.g. 001CreateUser. One consequence of this in the .NET world is that class names can't start with a number.  As a workaround, prefix each class name with an "_". 
+  e.g. File Name: 001CreateUser.cs
+       Class Name: _001CreateUser
+# Compile and run your Migrations. The easiest way to run your migrations is to create two External Tools references for your migrations targets - one for going up, and one for going down to a specific version.  Here's what the configurations look like if you're using MSBuild with .NET 2.0:
+Title: Migrate Up
+Command: C:\WINDOWS\Microsoft.NET\Framework\v2.0.50727\MSBuild.exe
+Arguments: build.proj /t:migrate
+Initial Directory: $(ProjectDir)
+Check the "Use Output window" box.
 
-{{{
-    <loadtasks assembly=".../Migrator.NAnt.dll" />
-    <target name="migrate" description="Migrate the database" depends="build">
-      <property name="version" value="-1" overwrite="false" />
-        <migrate
-          provider="MySql|PostgreSQL|SqlServer"
-          connectionstring="Database=MyDB;Data Source=localhost;User Id=;Password=;"
-          migrations="bin/MyProject.dll"
-          to="${version}" />
-    </target>
-}}}
+Title: Migrate To Version
+Command: C:\WINDOWS\Microsoft.NET\Framework\v2.0.50727\MSBuild.exe
+Arguments: build.proj /t:migrate
+Initial Directory: $(ProjectDir)
+Check the "Use Output window" box
+Also check the "Prompt for arguments" box.  You'll use that to specify which version you want to go to. (e.g. 0 for all the way back down).
 
-=== MSBuild ===
 
-{{{
-    <PropertyGroup>
-        <MigratorTasksPath>$(MSBuildProjectDirectory)\migrator</MigratorTasksPath>
-    </PropertyGroup>
+* For more details on the migrator tasks available, see WritingMigrations.
 
-    <Import Project="$(MigratorTasksPath)\Migrator.Targets" />
 
-    <Target name="Migrate" DependsOnTargets="Build">
-        <Migrate Provider="SqlServer" 
-            Connectionstring="Database=MyDB;Data Source=localhost;User Id=;Password=;" 
-            Migrations="bin/MyProject.dll"/>
-    </Target>
-}}}
