@@ -49,33 +49,35 @@ namespace DBMigration
 	}
 }
 }}}
-Where the Migration Attribute indicates the timestamp of when this Migration was created.
+Where the Migration Attribute indicates the order (or in version 0.8 and greater) the timestamp of this migration.
 
 
 == Installation and Configuration With Visual Studio ==
-* Here are the steps to add migrations to an existing solution in Visual Studio:
-# Add a new class library project.  In this example it's called Called DBMigration.
-# Create a lib directory in your DBMigration project, and extract all the dotnetmigrator DLLs into it. You can exclude database-specific DLLs that you don't need.  e.g. If you're not using Oracle, you don't need Oracle.DataAccess.dll.
-# In your DBMigration project, add a reference to the Migrator.Framework.dll. That's the only additional reference you need in the project.
-# create a build.proj file in your DBMigration project dir.  Refer to the full example in *MSBuildTarget.wiki*.  If you're using SQL Server, the only attribute you should need to adjust is the Connectionstring.  
-# Create your first migration.  For visual ease, it's nice to give migrations names that match their migration order.  e.g. 001CreateUser. One consequence of this in the .NET world is that class names can't start with a number.  As a workaround, prefix each class name with an "_". 
+
+Here are the steps to add migrations to an existing solution in Visual Studio:
+ # Add a new class library project.  In this example it's called Called DBMigration.
+ # Create a lib directory in your DBMigration project, and extract all the dotnetmigrator DLLs into it. You can exclude database-specific DLLs that you don't need.  e.g. If you're not using Oracle, you don't need Oracle.DataAccess.dll.
+ # In your DBMigration project, add a reference to the Migrator.Framework.dll. That's the only additional reference you need in the project.
+ # create a build.proj file in your DBMigration project dir.  Refer to the full example in *MSBuildTarget.wiki*.  If you're using SQL Server, the only attribute you should need to adjust is the Connectionstring.  
+ # Create your first migration.  For visual ease, it's nice to give migrations names that match their migration order.  e.g. 001CreateUser. One consequence of this in the .NET world is that class names can't start with a number.  As a workaround, prefix each class name with an "_". 
   e.g. File Name: 001CreateUser.cs
        Class Name: _001CreateUser
-# Compile and run your Migrations. The easiest way to run your migrations is to create two External Tools references for your migrations targets - one for going up, and one for going down to a specific version.  Here's what the configurations look like if you're using MSBuild with .NET 2.0:
-Title: Migrate Up
-Command: C:\WINDOWS\Microsoft.NET\Framework\v2.0.50727\MSBuild.exe
-Arguments: build.proj /t:migrate
-Initial Directory: $(ProjectDir)
-Check the "Use Output window" box.
+ # Compile and run your Migrations. The easiest way to run your migrations is to create two External Tools references for your migrations targets - one for going up, and one for going down to a specific version.  Here's what the configurations look like if you're using MSBuild with .NET 2.0:
+ 
+ Title: Migrate Up
+ Command: C:\WINDOWS\Microsoft.NET\Framework\v2.0.50727\MSBuild.exe
+ Arguments: build.proj /t:migrate
+ Initial Directory: $(ProjectDir)
+ Check the "Use Output window" box.
 
-Title: Migrate To Version
-Command: C:\WINDOWS\Microsoft.NET\Framework\v2.0.50727\MSBuild.exe
-Arguments: build.proj /t:migrate
-Initial Directory: $(ProjectDir)
-Check the "Use Output window" box
-Also check the "Prompt for arguments" box.  You'll use that to specify which version you want to go to. (e.g. 0 for all the way back down).
+ Title: Migrate To Version
+ Command: C:\WINDOWS\Microsoft.NET\Framework\v2.0.50727\MSBuild.exe
+ Arguments: build.proj /t:migrate
+ Initial Directory: $(ProjectDir)
+ Check the "Use Output window" box
+ Also check the "Prompt for arguments" box.  You'll use that to specify which version you want to go to. (e.g. 0 for all the way back down).
 
 
-* For more details on the migrator tasks available, see WritingMigrations.
+ * For more details on the migrator tasks available, see WritingMigrations.
 
 
