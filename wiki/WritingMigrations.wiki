@@ -22,7 +22,7 @@ public class AddCustomerTable : Migration
         {
                 Database.AddTable("Customer",
                           new Column("name", DbType.String, 50),
-                          new Column("address", DbType.String, 100)
+                          new Column("address", DbType.String, 100),
                           new Column("age", DbType.Int32, 100)
                          );
         }
