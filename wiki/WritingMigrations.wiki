@@ -21,9 +21,9 @@ public class AddCustomerTable : Migration
         public override void Up()
         {
                 Database.AddTable("Customer",
-                          new Column("name", DBType.String, 50),
-                          new Column("address", DBType.String, 100)
-                          new Column("age", DBType.Int32, 100)
+                          new Column("name", DbType.String, 50),
+                          new Column("address", DbType.String, 100)
+                          new Column("age", DbType.Int32, 100)
                          );
         }
         public override void Down()
@@ -47,8 +47,8 @@ public class AddCustomerTable : Migration
         public override void Up()
         {
                 Database.AddTable("CustomerAddress",
-                          new Column("customer_id", DBType.Int32),
-                          new Column("address_id", DBType.Int32)
+                          new Column("customer_id", DbType.Int32),
+                          new Column("address_id", DbType.Int32)
                          );
                 Database.AddPrimaryKey("CustomerAddress", "customer_id", "address_id");
         }
@@ -71,8 +71,8 @@ public class AddCustomerTable : Migration
         public override void Up()
         {
                 Database.AddTable("CustomerAddress",
-                          new Column("customer_id", DBType.Int32, ColumnProperty.PrimaryKey),
-                          new Column("address_id", DBType.Int32, ColumnProperty.PrimaryKey)
+                          new Column("customer_id", DbType.Int32, ColumnProperty.PrimaryKey),
+                          new Column("address_id", DbType.Int32, ColumnProperty.PrimaryKey)
                          );
         }
         public override void Down()
@@ -133,13 +133,14 @@ using System.Data;
 [Migration(5)]
 public class AddForeignKeyToTheBookAuthor : Migration
 {
+        private const string FK_NAME = "FK_Book_Author";
         public override void Up()
         {
-                Database.AddForeignKey("FK_Book_Author", "Book", "authorId", "Author", "id");
+                Database.AddForeignKey(FK_NAME, "Book", "authorId", "Author", "id");
         }
         public override void Down()
         {
-                Database.RemoveForeignKey("FK_Book_Author");
+                Database.RemoveForeignKey(FK_NAME);
         }
 }
 }}}
@@ -155,7 +156,7 @@ public class AddMiddleNameToCustomer : Migration
 {
         public override void Up()
         {
-                Database.AddColumn("Customer", "middle_name", DBType.String, 50);
+                Database.AddColumn("Customer", "middle_name", DbType.String, 50);
         }
         public override void Down()
         {
@@ -186,4 +187,3 @@ public class AddMiddleNameToCustomer : Migration
         }
 }
 }}}
-
