@@ -32,7 +32,7 @@ using System.Data;
 namespace DBMigration
 {
 	[Migration(20080401110402)]
-	public class 001_CreateUserTable : Migration
+	public class CreateUserTable_001 : Migration
 	{
 		public void Up()
 		{
@@ -79,5 +79,3 @@ Here are the steps to add migrations to an existing solution in Visual Studio:
 
 
  * For more details on the migrator tasks available, see WritingMigrations.
-
-
