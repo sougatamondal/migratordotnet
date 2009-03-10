@@ -37,8 +37,8 @@ namespace DBMigration
 		public void Up()
 		{
 			Database.CreateTable("User",
-				new Column("UserId", DBType.Int32, ColumnProperties.PrimaryKeyWithIdentity),
-				new Column("Username", DBType.AnsiString, 25)
+				new Column("UserId", DbType.Int32, ColumnProperties.PrimaryKeyWithIdentity),
+				new Column("Username", DbType.AnsiString, 25)
 				);
 		}
 
