@@ -59,9 +59,9 @@ Here are the steps to add migrations to an existing solution in Visual Studio:
  # Create a lib directory in your DBMigration project, and extract all the dotnetmigrator DLLs into it. You can exclude database-specific DLLs that you don't need.  e.g. If you're not using Oracle, you don't need Oracle.DataAccess.dll.
  # In your DBMigration project, add a reference to the Migrator.Framework.dll. That's the only additional reference you need in the project.
  # create a build.proj file in your DBMigration project dir.  Refer to the full example in *MSBuildTarget.wiki*.  If you're using SQL Server, the only attribute you should need to adjust is the Connectionstring.  
- # Create your first migration.  For visual ease, it's nice to give migrations names that match their migration order.  e.g. 001CreateUser. One consequence of this in the .NET world is that class names can't start with a number.  As a workaround, prefix each class name with an "_". 
-  e.g. File Name: 001CreateUser.cs
-       Class Name: _001CreateUser
+ # Create your first migration. 
+  e.g. File Name: CreateUser_001.cs
+       Class Name: CreateUser_001
  # Compile and run your Migrations. The easiest way to run your migrations is to create two External Tools references for your migrations targets - one for going up, and one for going down to a specific version.  Here's what the configurations look like if you're using MSBuild with .NET 2.0:
  
  Title: Migrate Up
