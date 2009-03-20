@@ -22,3 +22,6 @@ http://macournoyer.wordpress.com/2006/10/15/migrate-nant-task
 
 ==Database Migrations for .NET==
 http://www.zorched.net/2008/04/20/database-migrations-for-net/
+
+==Calling Migrator from within Visual Studio==
+http://michielvoo.net/blog/configuring-migrator-net-as-an-external-tool-in-visual-studio-using-msbuild/
